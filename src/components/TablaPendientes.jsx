@@ -1,48 +1,76 @@
-import Ticket from "./Ticket.jsx";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
+import {Button, getKeyValue, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import {GlobalContext} from "../context/GlobalContext.jsx";
-import {Table, TableHeader, TableColumn, TableBody} from "@nextui-org/react";
+import ModalForm from "./ModalForm.jsx";
 
-export default function TablaPendientes(){
-    const {dades, setDades, dataTicket, setDataTicket} = useContext(GlobalContext);
+export default function TablaPendientes({ticketsPendientes}){
+    const {dades, setDades,dataTicket, setDataTicket} = useContext(GlobalContext);
+    const [modalVisible, setModalVisible] = useState(false)
+    const ticketType = 'ticketsPendientes'
 
-    useEffect(() => {
-        const cargarDatos = async () => {
-            const response = await fetch('/bd.json');
-            const data = await response.json();
-            setDades(data);
-        };
+    const toggleModal = (ticketPendiente) =>{
+        setDataTicket(ticketPendiente)
+        setModalVisible(true)
+    }
 
-        cargarDatos()
-    }, [setDades]);
-
-    const controladorBorrarHistoria  = async (codigo)=>{
-        await fetch(`borrarTicket`, {
+    const controladorBorrarTicket  = async (ticketId)=>{
+        await fetch(`https://json-server-examen-final.vercel.app/ticketsPendientes/${ticketId}`, {
             method: 'DELETE'
         });
-        //Habría que poner alguna validacion
-        setDades(dades.filter(ticket => ticket.codigo !== codigo));
-    }
-    const datos = []
-          return (
-            <Table aria-label="Example static collection table">
-              <TableHeader>
-                <TableColumn>Codigo</TableColumn>
-                <TableColumn>Fecha</TableColumn>
-                <TableColumn>Aula</TableColumn>
-                <TableColumn>Grupo</TableColumn>
-                <TableColumn>Descripcion</TableColumn>
-                <TableColumn>STATUS</TableColumn>
-                <TableColumn>Alumno</TableColumn>
-                <TableColumn>Grupo</TableColumn>
-                <TableColumn>STATUS</TableColumn>
-              </TableHeader>
-              <TableBody>
-              {datos.map(tickets=>(
-                        <Ticket key={tickets} datos={tickets} />
-                    ))}
 
+        setDades({...dades, ticketsPendientes:dades.ticketsPendientes.filter(ticket => ticket.id !== ticketId)});
+    }
+    const controladorResolveTicket = async (ticketPendiente)=>{
+        const reponseDelete =         await fetch(`https://json-server-examen-final.vercel.app/ticketsPendientes/${ticketPendiente.id}`, {
+            method: 'DELETE'
+        });
+        delete ticketPendiente.id
+        if(reponseDelete.status === 200){
+            const response = await fetch(`https://json-server-examen-final.vercel.app/ticketsResueltos`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body:JSON.stringify(ticketPendiente)
+            });
+
+            const responseNewTicket = await response.json();
+            setDades({ticketsPendientes:dades.ticketsPendientes.filter(ticket => ticket.id !== ticketPendiente.id), ticketsResueltos: [...dades.ticketsResueltos, responseNewTicket]});
+
+        }
+    }
+     return (
+        <>
+            <Table >
+              <TableHeader>
+                <TableColumn key={'codigo'}>Codigo</TableColumn>
+                <TableColumn key={'fecha'}>Fecha</TableColumn>
+                <TableColumn key={'aula'}>Aula</TableColumn>
+                <TableColumn key={'grupo'}>Grupo</TableColumn>
+                  <TableColumn key={'ordenador'}>STATUS</TableColumn>
+                  <TableColumn key={'descripcion'}>Descripcion</TableColumn>
+                <TableColumn key={'alumno'}>Alumno</TableColumn>
+                  <TableColumn key={'status'}>Acciones</TableColumn>
+              </TableHeader>
+              <TableBody items={ticketsPendientes}>
+                  {(item) => (
+                      <TableRow key={item.codigo}>
+                          {(columnKey) => columnKey !== 'status'
+                              ? <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+                              : <TableCell>
+                                  <div className={'flex items-center'}>
+                                    <Button color="success" variant="flat" onClick={()=>controladorResolveTicket(item)}> Resolver</Button>
+                                    <Button color="success" variant="flat" onClick={()=>toggleModal(item)} > Editar</Button>
+                                    <Button color="success" variant="flat" > Comentar</Button>
+                                    <Button color="success" variant="flat" onClick={()=>{controladorBorrarTicket(item.id)}} > Eliminar</Button>
+                                  </div>
+                              </TableCell>
+                          }
+                      </TableRow>
+                  )}
               </TableBody>
             </Table>
-          );
-        }
+            <ModalForm isVisible={modalVisible} setIsVisible={setModalVisible} dataForm={dataTicket} ticketType={ticketType}/>
+        </>
+    );
+}

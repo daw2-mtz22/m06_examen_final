@@ -1,6 +1,7 @@
 {
   "ticketsPendientes": [
     {
+      "id": 1,
       "codigo": "123459",
       "fecha": "18/04/2023",
       "aula": "T6",
@@ -10,6 +11,7 @@
       "alumno": "Ana Martínez"
     },
     {
+      "id": 2,
       "codigo": "123460",
       "fecha": "19/04/2023",
       "aula": "T8",
@@ -19,6 +21,7 @@
       "alumno": "Pedro Gómez"
     },
     {
+      "id": 3,
       "codigo": "123461",
       "fecha": "20/04/2023",
       "aula": "T6",
@@ -28,6 +31,7 @@
       "alumno": "Sofía Fernández"
     },
     {
+      "id": 4,
       "codigo": "123462",
       "fecha": "21/04/2023",
       "aula": "T7",
@@ -37,6 +41,7 @@
       "alumno": "Luis Torres"
     },
     {
+      "id": 5,
       "codigo": "123463",
       "fecha": "22/04/2023",
       "aula": "T8",
@@ -48,6 +53,7 @@
   ],
   "ticketsResueltos": [
     {
+      "id": 6,
       "codigo": "123457",
       "fecha": "16/04/2023",
       "fecha_resuelto": "15/05/2023",
@@ -58,6 +64,7 @@
       "alumno": "Maria Lopez"
     },
     {
+      "id": 6,
       "codigo": "123458",
       "fecha": "17/04/2023",
       "fecha_resuelto": "15/05/2023",
@@ -68,6 +75,7 @@
       "alumno": "Juan Rodriguez"
     },
     {
+      "id": 7,
       "codigo": "123459",
       "fecha": "18/04/2023",
       "fecha_resuelto": "15/05/2023",

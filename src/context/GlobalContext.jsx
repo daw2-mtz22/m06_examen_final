@@ -5,7 +5,6 @@ export const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
     const [dades, setDades] = useState([]);
     const [dataTicket, setDataTicket] = useState({})
-    console.log(dades);
 
 
     return (
