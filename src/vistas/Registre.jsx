@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, DateInput, Input } from '@nextui-org/react'
-import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date'
 
 
 export default function Registre(){
@@ -40,8 +39,6 @@ export default function Registre(){
                       <DateInput
                         isRequired
                         label="Fecha de nacimiento:"
-                        maxValue={today(getLocalTimeZone())}
-                        defaultValue={today(getLocalTimeZone()).add({ days: 1 })}
                       />
                     </div>
                   </div>

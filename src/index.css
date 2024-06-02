@@ -30,7 +30,7 @@ body {
   margin: 0;
   display: flex;
   justify-content: center;
-  place-items: center;
+  place-items: start;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -70,4 +70,7 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+tr {
+  color: #213547;
 }

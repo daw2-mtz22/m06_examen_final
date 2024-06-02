@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, Textarea } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 
 export default function Login(){
   return (
